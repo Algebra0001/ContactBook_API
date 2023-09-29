@@ -1,0 +1,101 @@
+VICTORY:
+  
+MOdel
+- No relationship between Identity user and Contact model
+
+- No need for local user class. What is your thought for including LocalUser model??
+
+- No MaxPageSize property in your pagination class
+you should have a constant MaxPageSize users can fetch per page and set your page size and page number to initial number (eg. pageNumber = 1, pageSize = 10)
+
+
+ModelDTO
+- Too much repitations of codes in your DTO classes. You could use inheritance to reduce code duplication 
+
+- How does your system assign roles? Only Admin should be able to assign roles to user. But your system allows the user to assign role for themselves as they register.
+
+ContactRepository
+- Your UpdateAsync method is taking the whole entity (Contact) object as parameter.
+A better way will be to pass a Dto(e.g ContactRequestDto and an Id) as parameters.
+Then you can use the Id to queary the database.
+
+- Your file naming and folder structure should be consistent. (E.g You have Services folder inside Repository) Both should be separated
+
+- You seeded data in more than one place. You should seed in your data folder/Class libery Not in your Project entry point.
+
+What is the use of the ContactStore class ??
+
+- You could put your MappingConfig class in a Helper/Util folrder(or Class libery).
+
+ContactAPI
+- Too many configurations in your Program.cs. You could abstract most of the configurations to another class (file), then reference (call)them in Program.cs with just one line of code.
+
+- Why are you querying your database inside your controller?? (Always avoid querying your db in a controller. Db query should happen in your repository).
+
+Hint:
+- At the end of the day, I don't see anywhere you used LocalUser model. (Remove any code that is not relevant to your software functionalities. Always)
+
+- Your pagination implementation can be better
+
+- Your folder structure can be better
+
+- Your Naming convention can be better
+
+
+
+
+TEMITOPE:
+Please see Victory's comment. (Too much repitations of codes (Violating DRY))
+
+- Why making Phone, Register, Response and SingInModel entities??
+
+- Put all Dtos in a Dto folder/Class libery
+
+- You don't need to declare your string properties as empty (string.Empty) Since string will be null at initial state. (avoid writting too much code that your software will endup not using)
+
+- Your Identity user is in your Data layer ??
+
+- You're exposing your entity (Contact) to your application users in ContactRepository. It's better to use Dto to collect data from the users then map the Dto to your entity 
+
+- You seemed to implemented auto mapper yet you mapped manually through out your code. (You didn't use auto mapper anywhere. I didn't see where). Where Did you implement automapping??
+
+- Your UploadPhoto2 should be done in your repository. Please see Victory's comment.
+
+
+
+STEPHEN:
+
+- I assume you're using clean architecture principle. If so, your data layer should be in your Infrastructure class libery. Which architecture did you use??
+
+- To create anything in the Database, Id is automatically generated, You only need id on the response Dtos. No need to include Id property field in all your Dtos especially not in your requestDtos
+
+- Exposing your entity to the users, Please see Temitope's comment
+
+- What is your logic behinde having IContactRepository and IService?? And you put them in the same folder, Are both interface doing the same thing?? if Yes, why not have just one Interface, if No why are they in the same folder??
+
+- DataContext and migration folder should be in same datalayer folder/class libery.
+
+- Why modeling PhoneNumber?? Please Refer to Temitope's comment
+
+
+
+PEACE: 
+Please see Temitope's comment
+
+
+
+YUSUF:
+Please See Temitope's comment
+
+- Why did you have RepositoryInterfaces inside Services folder?? Seek to understand naming, relatioships and the flow of the architecture you're using. It will help you write clean and industrial standard codes.
+
+- Improve your variable names, use camelCase for variables (e.g affectedresult should be written as affectedResult)
+
+- You don't use Utility.API Why did you keep it?? (Always remove folder, class libery, method, or any code your software is not using. They will become liability to your software
+
+
+
+Note for all: 
+- Please Cloudinary is not a service owned by your application (Therefore, you should not name any folder or class libery containing external infrastructure (like cloudinary) Service ). You could put cloudinary inside an extension folder. Services Folder is performing different function. (Please study repository pattern for better understanding)
+
+- Your naming should be explicite enough. Your naming shouldn't leave the next developer to work on your code depressed. It's important.
